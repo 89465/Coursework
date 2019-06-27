@@ -16,6 +16,7 @@ public class Main {
         closeDatabase();
     }
 
+    // Add a new user to the database
     private static void addUser(String username, String DOB) {
         try {
 
@@ -32,6 +33,7 @@ public class Main {
 
     }
 
+    // Print the entire database to console
     private static void printDatabase() {
         try {
 
@@ -50,6 +52,7 @@ public class Main {
         }
     }
 
+    // Open a database
     private static void openDatabase(String dbFile) {
         try  {
             Class.forName("org.sqlite.JDBC");
@@ -63,6 +66,7 @@ public class Main {
 
     }
 
+    // Close the current database
     private static void closeDatabase(){
         try {
             db.close();
