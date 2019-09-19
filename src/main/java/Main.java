@@ -10,6 +10,7 @@ public class Main {
         openDatabase("database1.db");
 
         UserController.listUsers();
+        ActivityController.listActivities();
 
         closeDatabase();
     }

@@ -39,11 +39,13 @@ public class UserController {
             PreparedStatement ps = Main.db.prepareStatement("SELECT UserID, Username, DOB FROM Usernames");
 
             ResultSet results = ps.executeQuery();
+            System.out.println("Usernames:");
             while (results.next()) {
                 int userID = results.getInt(1);
                 String username= results.getString(2);
                 String dob = results.getString(3);
-                System.out.println(userID + " " + username + " " + dob);
+
+                System.out.println(userID + ":  " + username + " " + dob);
             }
 
         } catch (Exception exception) {
