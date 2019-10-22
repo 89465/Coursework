@@ -1,12 +1,11 @@
 package Controllers;
 
 import Server.Main;
+import org.glassfish.jersey.media.multipart.FormDataParam;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -14,8 +13,15 @@ import java.sql.ResultSet;
 @Path("users/")
 public class UserController {
     // Add a new user to the database
-    public static void addUser(String username, String DOB) {
+    @POST
+    @Path("add")
+    @Consumes(MediaType.MULTIPART_FORM_DATA)
+    @Produces(MediaType.APPLICATION_JSON)
+    public String addUser(@FormDataParam("username") String username, @FormDataParam("DOB") String DOB) {
         try {
+
+            if(username == null || DOB == null)
+                throw new Exception("One or more form data parameters are missing in the HTTP request.");
 
             PreparedStatement ps = Main.db.prepareStatement("INSERT INTO Usernames (username, DOB) VALUES (?, ?)");
 
@@ -23,9 +29,11 @@ public class UserController {
             ps.setString(2, DOB);
 
             ps.executeUpdate();
+            return "{\"status\": \"OK\"}";
 
         } catch (Exception exception) {
             System.out.println("Database error: " + exception.getMessage());
+            return "{\"error\": \"Unable to create new item, please see server console for more info.\"}";
         }
 
     }
