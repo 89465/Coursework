@@ -10,6 +10,8 @@ import org.sqlite.SQLiteConfig;
 import java.sql.Connection;
 import java.sql.DriverManager;
 
+// Go to http://localhost:8081/client/index.html to run
+
 public class Main {
 
     public static Connection db = null;
