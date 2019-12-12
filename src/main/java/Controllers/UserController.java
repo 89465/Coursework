@@ -17,16 +17,17 @@ public class UserController {
     @Path("add")
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     @Produces(MediaType.APPLICATION_JSON)
-    public String addUser(@FormDataParam("username") String username, @FormDataParam("DOB") String DOB) {
+    public String addUser(@FormDataParam("username") String username, @FormDataParam("password") String password, @FormDataParam("DOB") String DOB) {
         try {
 
             if(username == null || DOB == null)
                 throw new Exception("One or more form data parameters are missing in the HTTP request.");
 
-            PreparedStatement ps = Main.db.prepareStatement("INSERT INTO Usernames (username, DOB) VALUES (?, ?)");
+            PreparedStatement ps = Main.db.prepareStatement("INSERT INTO Usernames (username, password, DOB) VALUES (?, ?, ?)");
 
             ps.setString(1, username);
-            ps.setString(2, DOB);
+            ps.setString(2, password);
+            ps.setString(3, DOB);
 
             ps.executeUpdate();
             return "{\"status\": \"OK\"}";
@@ -39,14 +40,23 @@ public class UserController {
     }
 
     // Removes a user from the database
-    public static void removeUser(int UserID) {
+    @POST
+    @Path("remove")
+    @Consumes(MediaType.MULTIPART_FORM_DATA)
+    @Produces(MediaType.APPLICATION_JSON)
+    public String removeUser(@FormDataParam("userID") int UserID) {
         try {
+            if (UserID == 0)
+                throw new Exception("One or more form data parameters are missing in the HTTP request.");
+
             PreparedStatement ps = Main.db.prepareStatement("DELETE FROM Usernames WHERE UserID = ?");
             ps.setInt(1, UserID);
             ps.executeUpdate();
+            return "{\"status\": \"OK\"}";
 
         } catch (Exception exception) {
             System.out.println("Database error: " + exception.getMessage());
+            return "{\"error\": \"Unable to create new item, please see server console for more info.\"}";
         }
     }
 

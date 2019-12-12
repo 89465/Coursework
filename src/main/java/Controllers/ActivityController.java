@@ -1,12 +1,11 @@
 package Controllers;
 
 import Server.Main;
+import org.glassfish.jersey.media.multipart.FormDataParam;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -16,20 +15,25 @@ import java.util.Map;
 @Path("activities/")
 public class ActivityController {
     // Add a new user to the database
-    public static void addActivity(int activityID, String description, boolean productive) {
+    @POST
+    @Path("add")
+    @Consumes(MediaType.MULTIPART_FORM_DATA)
+    @Produces(MediaType.APPLICATION_JSON)
+    public String addActivity(@FormDataParam("description") String description, @FormDataParam("productive") boolean productive) {
         try {
 
-            PreparedStatement ps = Main.db.prepareStatement("INSERT INTO Activities (activityID, description, productive) VALUES (?, ?, ?)");
+            PreparedStatement ps = Main.db.prepareStatement("INSERT INTO Activities (description, productive) VALUES (?, ?)");
 
-            ps.setInt(1, activityID);
-            ps.setString(2, description);
-            ps.setBoolean(3, productive);
+            ps.setString(1, description);
+            ps.setBoolean(2, productive);
 
 
             ps.executeUpdate();
+            return "{\"status\": \"OK\"}";
 
         } catch (Exception exception) {
             System.out.println("Database error: " + exception.getMessage());
+            return "{\"error\": \"Unable to create new item, please see server console for more info.\"}";
         }
 
     }
@@ -64,6 +68,7 @@ public class ActivityController {
                 item.put("description", results.getString(2));
                 item.put("productive", results.getBoolean(3));
                 list.add(item);
+                System.out.println(item.get("activityID") + ": " + item.get("description") + " (" + item.get("productive") + ")");
             }
             return list.toString();
 

@@ -1,0 +1,17 @@
+body {
+    background-color: navy;
+    margin: 0;
+    font-family: 'Arial', serif;
+}
+
+h1 {
+    margin-top:0;
+}
+
+#content {
+    background-color: white;
+    width: 700px;
+    margin: 0 auto;
+    min-height: 500px;
+    padding: 16px;
+}
