@@ -2,12 +2,11 @@ package Controllers;
 
 import Server.Main;
 import jdk.swing.interop.SwingInterOpUtils;
+import org.glassfish.jersey.media.multipart.FormDataParam;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -15,7 +14,11 @@ import java.sql.ResultSet;
 @Path("users/activities/")
 public class UserActivityController {
     // Add a new user to the database
-    public static void addActivity(int userID, int activityID, String startDate, String startTime, String endDate, String endTime) {
+    @POST
+    @Path("add")
+    @Consumes(MediaType.MULTIPART_FORM_DATA)
+    @Produces(MediaType.APPLICATION_JSON)
+    public String addActivity(@FormDataParam("userID") int userID, @FormDataParam("activityID") int activityID, @FormDataParam("startDate") String startDate, @FormDataParam("startTime") String startTime, @FormDataParam("endDate") String endDate, @FormDataParam("endTime") String endTime) {
         try {
 
             PreparedStatement ps = Main.db.prepareStatement("INSERT INTO UserActivities (userID, activityID, startDate, startTime, endDate, endTime) VALUES (?, ?, ?, ?, ?, ?)");
@@ -29,22 +32,30 @@ public class UserActivityController {
 
 
             ps.executeUpdate();
+            return "{\"status\": \"OK\"}";
 
         } catch (Exception exception) {
             System.out.println("Database error: " + exception.getMessage());
+            return "{\"error\": \"Unable to create new item, please see server console for more info.\"}";
         }
 
     }
 
     // Removes a user from the database
-    public static void removeActivity(int UserActivityID) {
+    @POST
+    @Path("remove")
+    @Consumes(MediaType.MULTIPART_FORM_DATA)
+    @Produces(MediaType.APPLICATION_JSON)
+    public String removeActivity(@FormDataParam("userActivityID") int userActivityID) {
         try {
-            PreparedStatement ps = Main.db.prepareStatement("DELETE FROM UserActivities WHERE UserActivityID = ?");
-            ps.setInt(1, UserActivityID);
+            PreparedStatement ps = Main.db.prepareStatement("DELETE FROM UserActivities WHERE userActivityID = ?");
+            ps.setInt(1, userActivityID);
             ps.executeUpdate();
+            return "{\"status\": \"OK\"}";
 
         } catch (Exception exception) {
             System.out.println("Database error: " + exception.getMessage());
+            return "{\"error\": \"Unable to create new item, please see server console for more info.\"}";
         }
     }
 

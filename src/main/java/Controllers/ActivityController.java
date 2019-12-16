@@ -39,14 +39,20 @@ public class ActivityController {
     }
 
     // Removes a user from the database
-    public static void removeActivity(int activityID) {
+    @POST
+    @Path("remove")
+    @Consumes(MediaType.MULTIPART_FORM_DATA)
+    @Produces(MediaType.APPLICATION_JSON)
+    public String removeActivity(@FormDataParam("activityID") int activityID) {
         try {
             PreparedStatement ps = Main.db.prepareStatement("DELETE FROM Activities WHERE activityID = ?");
             ps.setInt(1, activityID);
             ps.executeUpdate();
+            return "{\"status\": \"OK\"}";
 
         } catch (Exception exception) {
             System.out.println("Database error: " + exception.getMessage());
+            return "{\"error\": \"Unable to create new item, please see server console for more info.\"}";
         }
     }
 
