@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+    <link rel="stylesheet" type="text/css" href="/client/css/style.css">
+    <script src="/client/js/js.cookie.js"></script>
+    <script src="/client/js/login.js"></script>
+    <link rel="shortcut icon" href="/client/favicon.ico" type="image/x-icon">
+</head>
+<body onload="pageLoad()">
+<div id="content">
+    <h1>Please log in to continue...</h1>
+    <hr />
+    <form id="loginForm">
+        <div class="loginDiv">
+            <label for="username">Username: </label>
+            <input type="text" name="username" id="username">
+        </div>
+        <div class="loginDiv">
+            <label for="password">Password: </label>
+            <input type="password" name="password" id="password">
+        </div>
+        <div class="loginDiv">
+            <input type="submit" value="Login" id="loginButton">
+        </div>
+        <div class="loginDiv">
+            Don't have an account? Click <a href='/client/register.html'>here</a> to register.
+        </div>
+    </form>
+</div>
+</body>
+</html>

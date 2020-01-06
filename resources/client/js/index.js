@@ -3,7 +3,6 @@ function pageLoad() {
     let now = new Date();
 
     let myHTML = '<div>'
-        + '<p style="float: right;"><img src="/client/favicon.ico"  alt="Logo"p>'
         + '<h1 style="padding-top: 24px; line-height: 0;">Leo\'s Productivity Tracker</h1>'
         + '<p style="font-style: italic; font-size: 12px;">a simple time management tool</p>'
         + '<div style="font-style: italic;">'
@@ -34,5 +33,44 @@ function pageLoad() {
         }, 500);
     }
     startTime();
+    checkLogin();
+}
+
+function checkLogin() {
+
+    let username = Cookies.get("username");
+
+    let logInHTML = '';
+
+    if (username === undefined) {
+
+        let editButtons = document.getElementsByClassName("editButton");
+        for (let button of editButtons) {
+            button.style.visibility = "hidden";
+        }
+
+        let deleteButtons = document.getElementsByClassName("deleteButton");
+        for (let button of deleteButtons) {
+            button.style.visibility = "hidden";
+        }
+
+        logInHTML = "<a href='/client/login.html'><button id='loginButton'>Log in / Register</button></a>";
+    } else {
+
+        let editButtons = document.getElementsByClassName("editButton");
+        for (let button of editButtons) {
+            button.style.visibility = "visible";
+        }
+
+        let deleteButtons = document.getElementsByClassName("deleteButton");
+        for (let button of deleteButtons) {
+            button.style.visibility = "visible";
+        }
+
+        logInHTML = "user: " + username + " <a href='/client/login.html?logout'><button id='loginButton'>Log Out</button></a>";
+
+    }
+
+    document.getElementById("loggedInDetails").innerHTML = logInHTML;
 
 }
