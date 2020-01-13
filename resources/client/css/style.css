@@ -69,3 +69,19 @@ input, label {
     font-weight: bold;
     padding-top: 20px;
 }
+
+#timetable {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+}
+
+tr:nth-child(even) {
+    background-color: #dddddd;
+}
+
+td, th {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+}

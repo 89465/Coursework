@@ -70,14 +70,15 @@ public class UserController {
         JSONArray list = new JSONArray();
         try {
 
-            PreparedStatement ps = Main.db.prepareStatement("SELECT UserID, Username, DOB FROM Usernames");
+            PreparedStatement ps = Main.db.prepareStatement("SELECT UserID, Username, Password, DOB FROM Usernames");
 
             ResultSet results = ps.executeQuery();
             while (results.next()) {
                 JSONObject item = new JSONObject();
                 item.put("userID", results.getInt(1));
                 item.put("username", results.getString(2));
-                item.put("DOB", results.getString(3));
+                item.put("password", results.getString(3));
+                item.put("DOB", results.getString(4));
                 list.add(item);
             }
             return list.toString();

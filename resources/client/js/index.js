@@ -2,16 +2,6 @@ function pageLoad() {
 
     let now = new Date();
 
-    let myHTML = '<div>'
-        + '<h1 style="padding-top: 24px; line-height: 0;">Leo\'s Productivity Tracker</h1>'
-        + '<p style="font-style: italic; font-size: 12px;">a simple time management tool</p>'
-        + '<div style="font-style: italic;">'
-        + 'Generated at ' + now.toLocaleTimeString()
-        + '<div id="time"></div>'
-        + '</div>'
-        + '</div>';
-
-    document.getElementById("index").innerHTML = myHTML;
     function checkTime(i) {
         if (i < 10) {
             i = "0" + i;
@@ -19,20 +9,6 @@ function pageLoad() {
         return i;
     }
 
-    function startTime() {
-        var today = new Date();
-        var h = today.getHours();
-        var m = today.getMinutes();
-        var s = today.getSeconds();
-        // add a zero in front of numbers<10
-        m = checkTime(m);
-        s = checkTime(s);
-        document.getElementById('time').innerHTML = "Current Time: " + h + ":" + m + ":" + s;
-        t = setTimeout(function() {
-            startTime()
-        }, 500);
-    }
-    startTime();
     checkLogin();
 }
 
@@ -54,6 +30,9 @@ function checkLogin() {
             button.style.visibility = "hidden";
         }
 
+        document.getElementById("description").hidden = false;
+        document.getElementById("timetable").hidden = true;
+
         logInHTML = "<a href='/client/login.html'><button id='loginButton'>Log in / Register</button></a>";
     } else {
 
@@ -67,7 +46,30 @@ function checkLogin() {
             button.style.visibility = "visible";
         }
 
-        logInHTML = "user: " + username + " <a href='/client/login.html?logout'><button id='loginButton'>Log Out</button></a>";
+        document.getElementById("description").hidden = true;
+        document.getElementById("timetable").hidden = false;
+
+        let tableBody = document.getElementById("timetable").getElementsByTagName('tbody')[0];
+        tableBody.innerHTML="";
+
+        fetch("/users/list", {method: 'get'}
+        ).then(response => response.json()
+        ).then(responseData => {
+
+            if (responseData.hasOwnProperty('error')) {
+                alert(responseData.error);
+            } else {
+                for (let i = 0; i < 4; i++) {
+                    let newRow = tableBody.insertRow(i);
+                    newRow.insertCell(0).appendChild(document.createTextNode(responseData[i].username));
+                    newRow.insertCell(1).appendChild(document.createTextNode(responseData[i].password));
+                    newRow.insertCell(2).appendChild(document.createTextNode(responseData[i].DOB));
+                }
+            }
+
+        });
+
+        logInHTML = "<a href='/client/login.html?logout'><button id='loginButton'>Logged in as: " + username + " (Log out)</button></a>";
 
     }
 
