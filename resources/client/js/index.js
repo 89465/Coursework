@@ -1,14 +1,5 @@
 function pageLoad() {
 
-    let now = new Date();
-
-    function checkTime(i) {
-        if (i < 10) {
-            i = "0" + i;
-        }
-        return i;
-    }
-
     checkLogin();
 }
 
@@ -31,7 +22,7 @@ function checkLogin() {
         }
 
         document.getElementById("description").hidden = false;
-        document.getElementById("timetable").hidden = true;
+        document.getElementById("tableDiv").hidden = true;
 
         logInHTML = "<a href='/client/login.html'><button id='loginButton'>Log in / Register</button></a>";
     } else {
@@ -47,10 +38,7 @@ function checkLogin() {
         }
 
         document.getElementById("description").hidden = true;
-        document.getElementById("timetable").hidden = false;
-
-        let tableBody = document.getElementById("timetable").getElementsByTagName('tbody')[0];
-        tableBody.innerHTML="";
+        document.getElementById("tableDiv").hidden = false;
 
         fetch("/users/list", {method: 'get'}
         ).then(response => response.json()
@@ -59,12 +47,28 @@ function checkLogin() {
             if (responseData.hasOwnProperty('error')) {
                 alert(responseData.error);
             } else {
-                for (let i = 0; i < 4; i++) {
-                    let newRow = tableBody.insertRow(i);
-                    newRow.insertCell(0).appendChild(document.createTextNode(responseData[i].username));
-                    newRow.insertCell(1).appendChild(document.createTextNode(responseData[i].password));
-                    newRow.insertCell(2).appendChild(document.createTextNode(responseData[i].DOB));
-                }
+
+                    let innerHTML = '<table id="timetable">' +
+                    '<thead>' +
+                    '<tr>' +
+                    '<th>Username</th>' +
+                    '<th>Password</th>' +
+                    '<th>DOB</th>' +
+                    '</tr>' +
+                    '</thead>' +
+                    '<tbody>';
+
+                    for (let i = 0; i < responseData.length; i++) {
+                        innerHTML += '<tr><td>' +
+                            responseData[i].username + '</td><td>' +
+                            responseData[i].password + '</td><td>' +
+                            responseData[i].DOB + '</td></tr>'
+                    }
+
+                    innerHTML += '</tbody>' +
+                    '</table>';
+
+                    document.getElementById("tableDiv").innerHTML = innerHTML
             }
 
         });
