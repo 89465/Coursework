@@ -23,6 +23,7 @@ function checkLogin() {
 
         document.getElementById("description").hidden = false;
         document.getElementById("tableDiv").hidden = true;
+        document.getElementById("addButton").hidden = true;
 
         logInHTML = "<a href='/client/login.html'><button id='loginButton'>Log in / Register</button></a>";
     } else {
@@ -39,8 +40,9 @@ function checkLogin() {
 
         document.getElementById("description").hidden = true;
         document.getElementById("tableDiv").hidden = false;
+        document.getElementById("addButton").hidden = false;
 
-        fetch("/users/list", {method: 'get'}
+        fetch("/users/activities/list", {method: 'get'}
         ).then(response => response.json()
         ).then(responseData => {
 
@@ -51,18 +53,24 @@ function checkLogin() {
                     let innerHTML = '<table id="timetable">' +
                     '<thead>' +
                     '<tr>' +
-                    '<th>Username</th>' +
-                    '<th>Password</th>' +
-                    '<th>DOB</th>' +
+                    '<th>Activity</th>' +
+                    '<th>Started</th>' +
+                    '<th>Finished</th>' +
                     '</tr>' +
                     '</thead>' +
                     '<tbody>';
 
+                    let usercount = 0;
                     for (let i = 0; i < responseData.length; i++) {
+                        if (username == responseData[i].username)
+                            usercount++;
+                    }
+                    for (let i = 0; i < usercount; i++) {
+
                         innerHTML += '<tr><td>' +
-                            responseData[i].username + '</td><td>' +
-                            responseData[i].password + '</td><td>' +
-                            responseData[i].DOB + '</td></tr>'
+                            responseData[i].activityName + '</td><td>' +
+                            responseData[i].startDate + " " + responseData[i].startTime + '</td><td>' +
+                            responseData[i].endDate + " " + responseData[i].endTime + '</td></tr>'
                     }
 
                     innerHTML += '</tbody>' +

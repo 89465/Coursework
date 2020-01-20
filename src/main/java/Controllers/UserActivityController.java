@@ -68,19 +68,22 @@ public class UserActivityController {
         JSONArray list = new JSONArray();
         try {
 
-            PreparedStatement ps = Main.db.prepareStatement("SELECT UserActivityID, UserID, UserActivities.ActivityID, Description, StartDate, StartTime, EndDate, EndTime FROM UserActivities INNER JOIN Activities ON UserActivities.ActivityID=Activities.ActivityID;");
+            PreparedStatement ps = Main.db.prepareStatement("SELECT UserActivityID, UserActivities.UserID, Usernames.Username, UserActivities.ActivityID, Description, StartDate, StartTime, EndDate, EndTime " +
+                    "FROM UserActivities INNER JOIN Activities ON UserActivities.ActivityID=Activities.ActivityID" +
+                    " INNER JOIN Usernames ON UserActivities.UserID=Usernames.UserID;");
 
             ResultSet results = ps.executeQuery();
             while (results.next()) {
                 JSONObject item = new JSONObject();
                 item.put("userActivityID", results.getInt(1));
                 item.put("userID", results.getInt(2));
-                item.put("activityID", results.getInt(3));
-                item.put("activityName", results.getString(4));
-                item.put("startDate", results.getString(5));
-                item.put("startTime", results.getString(6));
-                item.put("endDate", results.getString(7));
-                item.put("endTime", results.getString(8));
+                item.put("username", results.getString(3));
+                item.put("activityID", results.getInt(4));
+                item.put("activityName", results.getString(5));
+                item.put("startDate", results.getString(6));
+                item.put("startTime", results.getString(7));
+                item.put("endDate", results.getString(8));
+                item.put("endTime", results.getString(9));
                 list.add(item);
             }
             return list.toString();

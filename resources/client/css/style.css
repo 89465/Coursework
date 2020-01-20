@@ -23,7 +23,7 @@ h1 {
     padding-bottom: 30px;
 }
 
-#username, #password, #dob {
+#username, #password, #dob, #activity, #starttime, #startdate, #endtime, #enddate {
     margin-left: 20px;
     font-size: 14pt;
 }
@@ -37,7 +37,7 @@ h1 {
     background-color: dodgerblue;
 }
 
-.editButton, .deleteButton, #saveButton, #cancelButton, #loginButton {
+.editButton, .deleteButton, #addButton, #saveButton, #cancelButton, #loginButton {
     color: black;
     font-size: 14px;
     border: none;
@@ -45,7 +45,7 @@ h1 {
     border-radius: 8px;
 }
 
-.deleteButton {
+.deleteButton, #cancelButton {
     background-color: #fa5c4d;
 }
 
@@ -53,8 +53,16 @@ h1 {
     background-color: lightgray;
 }
 
-.deleteButton:hover {
+.deleteButton:hover, #cancelButton:hover {
     background-color: #cf3325;
+}
+
+#addButton {
+    background-color: #28a745;
+}
+
+#addButton:hover {
+    background-color: #209735;
 }
 
 #controls {

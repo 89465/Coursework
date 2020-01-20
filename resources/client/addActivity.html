@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+    <link rel="stylesheet" type="text/css" href="/client/css/style.css">
+    <script src="/client/js/js.cookie.js"></script>
+    <script src="/client/js/addActivity.js"></script>
+    <link rel="shortcut icon" href="/client/favicon.ico" type="image/x-icon">
+</head>
+<body onload="pageLoad()">
+<div id="content">
+    <h1>Please log in to continue...</h1>
+    <hr />
+    <form id="loginForm">
+        <div class="loginDiv">
+            <label for="activity">Activity: </label>
+            <select name="activities" id="activity"></select>
+        </div>
+        <div class="loginDiv">
+            <label for="starttime">Start Time: </label>
+            <input type="time" name="starttime" id="starttime">
+            <input type="date" name="startdate" id="startdate">
+        </div>
+        <div class="loginDiv">
+            <label for="endtime">End Time: </label>
+            <input type="time" name="endtime" id="endtime">
+            <input type="date" name="enddate" id="enddate">
+        </div>
+        <div class="loginDiv">
+            <input type="submit" value="Add" id="loginButton">
+            <a href="/client/index.html"><button type="button" id="cancelButton">Cancel</button></a>
+        </div>
+    </form>
+</div>
+</body>
+</html>
