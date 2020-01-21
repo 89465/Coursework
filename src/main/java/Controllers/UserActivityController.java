@@ -1,7 +1,7 @@
 package Controllers;
 
 import Server.Main;
-import jdk.swing.interop.SwingInterOpUtils;
+//import jdk.swing.interop.SwingInterOpUtils;
 import org.glassfish.jersey.media.multipart.FormDataParam;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -29,6 +29,35 @@ public class UserActivityController {
             ps.setString(4, startTime);
             ps.setString(5, endDate);
             ps.setString(6, endTime);
+
+
+            ps.executeUpdate();
+            return "{\"status\": \"OK\"}";
+
+        } catch (Exception exception) {
+            System.out.println("Database error: " + exception.getMessage());
+            return "{\"error\": \"Unable to create new item, please see server console for more info.\"}";
+        }
+
+    }
+
+    // Update an existing user in the database
+    @POST
+    @Path("update")
+    @Consumes(MediaType.MULTIPART_FORM_DATA)
+    @Produces(MediaType.APPLICATION_JSON)
+    public String updateActivity(@FormDataParam("userActivityID") int userActivityID, @FormDataParam("userID") int userID, @FormDataParam("activityID") int activityID, @FormDataParam("startDate") String startDate, @FormDataParam("startTime") String startTime, @FormDataParam("endDate") String endDate, @FormDataParam("endTime") String endTime) {
+        try {
+
+            PreparedStatement ps = Main.db.prepareStatement("UPDATE UserActivities SET userID=?, activityID=?, startDate=?, startTime=?, endDate=?, endTime=? WHERE UserActivityID=?");
+
+            ps.setInt(1, userID);
+            ps.setInt(2, activityID);
+            ps.setString(3, startDate);
+            ps.setString(4, startTime);
+            ps.setString(5, endDate);
+            ps.setString(6, endTime);
+            ps.setInt(7, userActivityID);
 
 
             ps.executeUpdate();

@@ -1,6 +1,17 @@
 function pageLoad() {
-
     checkLogin();
+}
+
+function editRow(row) {
+    window.location.href = "/client/editActivity.html?userActivityID=" + row.parentNode.parentElement.id;
+}
+
+function removeRow(row) {
+    const formData = new FormData();
+    formData.append("userActivityID", row.parentNode.parentElement.id);
+
+    fetch("/users/activities/remove", {method: 'post', body: formData}).then();
+    row.parentNode.parentNode.parentNode.removeChild(row.parentNode.parentNode);
 }
 
 function checkLogin() {
@@ -56,32 +67,34 @@ function checkLogin() {
                     '<th>Activity</th>' +
                     '<th>Started</th>' +
                     '<th>Finished</th>' +
+                    '<th id="controls">Add / Delete</th>' +
                     '</tr>' +
                     '</thead>' +
                     '<tbody>';
 
-                    let usercount = 0;
-                    for (let i = 0; i < responseData.length; i++) {
-                        if (username == responseData[i].username)
-                            usercount++;
-                    }
-                    for (let i = 0; i < usercount; i++) {
 
-                        innerHTML += '<tr><td>' +
-                            responseData[i].activityName + '</td><td>' +
-                            responseData[i].startDate + " " + responseData[i].startTime + '</td><td>' +
-                            responseData[i].endDate + " " + responseData[i].endTime + '</td></tr>'
+                    for (let i = 0; i < responseData.length; i++) {
+                        if (username == responseData[i].username) {
+                            innerHTML += '<tr id="' + responseData[i].userActivityID + '"><td>' +
+                                responseData[i].activityName + '</td><td>' +
+                                responseData[i].startDate + " " + responseData[i].startTime + '</td><td>' +
+                                responseData[i].endDate + " " + responseData[i].endTime + '</td><td>' +
+                                '<button class="editButton" onclick="editRow(this)">Edit</button> <button class="deleteButton" onclick="removeRow(this);">Delete</button></td></tr>'
+                        }
                     }
 
                     innerHTML += '</tbody>' +
                     '</table>';
 
                     document.getElementById("tableDiv").innerHTML = innerHTML
+
             }
 
         });
 
         logInHTML = "<a href='/client/login.html?logout'><button id='loginButton'>Logged in as: " + username + " (Log out)</button></a>";
+        if (username == "leos")
+            logInHTML += "<br><a href='/client/admin.html'><button class='editButton'>Admin Page</button></a>"
 
     }
 

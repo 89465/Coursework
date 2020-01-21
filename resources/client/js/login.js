@@ -23,6 +23,7 @@ function login(event) {
         if (responseData.hasOwnProperty('error')) {
             alert(responseData.error);
         } else {
+            Cookies.set("userID", responseData.userID);
             Cookies.set("username", responseData.username);
             Cookies.set("token", responseData.token);
 

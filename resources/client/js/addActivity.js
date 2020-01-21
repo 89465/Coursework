@@ -4,7 +4,7 @@ function pageLoad() {
     ).then(response => response.json()
     ).then(responseData => {
         for (let i = 0; i < responseData.length; i++)
-            document.getElementById("activity").innerHTML += "<option value=\"" + responseData[i].description.toLowerCase() + "\">" + responseData[i].description + "</option>";
+            document.getElementById("activity").innerHTML += "<option value=\"" + (i+1) + "\">" + responseData[i].description + "</option>";
     });
 
     document.getElementById("loginButton").addEventListener("click", add);
@@ -16,8 +16,7 @@ function add(event) {
     const form = document.getElementById("loginForm");
     const formData = new FormData(form);
 
-    console.log(formData.values())
-
+    formData.append("userID", Cookies.get("userID"));
 
     fetch("/users/activities/add", {method: 'post', body: formData}
     ).then(response => response.json()

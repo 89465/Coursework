@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+    <link rel="stylesheet" type="text/css" href="/client/css/style.css">
+    <script src="/client/js/js.cookie.js"></script>
+    <script src="/client/js/editUser.js"></script>
+    <link rel="shortcut icon" href="/client/favicon.ico" type="image/x-icon">
+</head>
+<body onload="pageLoad()">
+<div id="content">
+    <h1 id="editUser">Edit user</h1>
+    <hr />
+    <form id="loginForm">
+        <div class="loginDiv">
+            <label for="password">Password: </label>
+            <input type="text" name="password" id="password">
+        </div>
+        <div class="loginDiv">
+            <label for="dob">DOB: </label>
+            <input type="date" name="DOB" id="dob">
+        </div>
+        <div class="loginDiv">
+            <input type="submit" value="Save" id="loginButton">
+            <a href="/client/admin.html"><button type="button" id="cancelButton">Cancel</button></a>
+        </div>
+    </form>
+</div>
+</body>
+</html>

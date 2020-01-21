@@ -1,10 +1,17 @@
 function pageLoad() {
-
     checkLogin();
 }
 
-function test() {
-    console.log(this.parentElement);
+function editRow(row) {
+    window.location.href = "/client/editUser.html?userID=" + row.parentNode.parentElement.id;
+}
+
+function removeRow(row) {
+    const formData = new FormData();
+    formData.append("userID", row.parentNode.parentElement.id);
+
+    fetch("/users/remove", {method: 'post', body: formData}).then();
+    row.parentNode.parentNode.parentNode.removeChild(row.parentNode.parentNode);
 }
 
 function checkLogin() {
@@ -38,11 +45,11 @@ function checkLogin() {
                     '<tbody>';
 
                 for (let i = 0; i < responseData.length; i++) {
-                    innerHTML += '<tr><td>' +
+                    innerHTML += '<tr id="' + responseData[i].userID + '"><td>' +
                         responseData[i].username + '</td><td>' +
                         responseData[i].password + '</td><td>' +
                         responseData[i].DOB + '</td><td>' +
-                        '<button class="editButton">Edit</button> <button class="deleteButton">Delete</button></td></tr>'
+                        '<button class="editButton" onclick="editRow(this)">Edit</button> <button class="deleteButton" onclick="removeRow(this)">Delete</button></td></tr>'
                 }
 
                 innerHTML += '</tbody>' +
@@ -56,7 +63,8 @@ function checkLogin() {
 
         });
 
-        logInHTML = "<a href='/client/login.html?logout'><button id='loginButton'>Logged in as: " + username + " (Log out)</button></a>";
+        logInHTML = "<a href='/client/login.html?logout'><button id='loginButton'>Logged in as: " + username + " (Log out)</button></a>" +
+            "<br><a href='/client/index.html?'><button class='editButton'>Home</button></a>";
 
     }
 

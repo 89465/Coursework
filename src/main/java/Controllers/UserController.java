@@ -40,6 +40,32 @@ public class UserController {
 
     }
 
+    // Update an existing user in the database
+    @POST
+    @Path("update")
+    @Consumes(MediaType.MULTIPART_FORM_DATA)
+    @Produces(MediaType.APPLICATION_JSON)
+    public String updateActivity(@FormDataParam("userID") int userID, @FormDataParam("password") String password, @FormDataParam("DOB") String DOB) {
+        try {
+
+            PreparedStatement ps = Main.db.prepareStatement("UPDATE Usernames SET password=?, DOB=? WHERE userID=?");
+
+
+            ps.setString(1, password);
+            ps.setString(2, DOB);
+            ps.setInt(3, userID);
+
+
+            ps.executeUpdate();
+            return "{\"status\": \"OK\"}";
+
+        } catch (Exception exception) {
+            System.out.println("Database error: " + exception.getMessage());
+            return "{\"error\": \"Unable to create new item, please see server console for more info.\"}";
+        }
+
+    }
+
     // Removes a user from the database
     @POST
     @Path("remove")
@@ -114,7 +140,12 @@ public class UserController {
                     ps2.setString(2, username);
                     ps2.executeUpdate();
 
+                    PreparedStatement ps3 = Main.db.prepareStatement("SELECT UserID FROM Usernames WHERE Username = ?");
+                    ps3.setString(1, username);
+                    ResultSet results = ps3.executeQuery();
+
                     JSONObject userDetails = new JSONObject();
+                    userDetails.put("userID", results.getInt(1));
                     userDetails.put("username", username);
                     userDetails.put("token", token);
                     return userDetails.toString();
