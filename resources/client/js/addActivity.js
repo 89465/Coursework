@@ -16,6 +16,11 @@ function add(event) {
     const form = document.getElementById("loginForm");
     const formData = new FormData(form);
 
+    if((Date.parse(formData.get("endDate") + "T" + formData.get("endTime") + ":00") - Date.parse(formData.get("startDate") + "T" + formData.get("startTime") + ":00")) <= 0 ) {
+        alert("Your activity must end after it's started!");
+        return;
+    }
+
     formData.append("userID", Cookies.get("userID"));
 
     fetch("/users/activities/add", {method: 'post', body: formData}

@@ -200,7 +200,7 @@ public class UserController {
     }
 
 
-                public static boolean validToken(String token) {
+    public static boolean validToken(String token) {
         try {
             PreparedStatement ps = Main.db.prepareStatement("SELECT UserID FROM Users WHERE Token = ?");
             ps.setString(1, token);

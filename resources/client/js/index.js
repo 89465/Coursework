@@ -72,9 +72,13 @@ function checkLogin() {
                     '</thead>' +
                     '<tbody>';
 
+                    var tableData = [0, 0, 0, 0, 0];
 
                     for (let i = 0; i < responseData.length; i++) {
                         if (username == responseData[i].username) {
+                            tableData[responseData[i].activityID - 1] += (Date.parse(responseData[i].endDate + "T" + responseData[i].endTime + ":00") -
+                                Date.parse(responseData[i].startDate + "T" + responseData[i].startTime + ":00")) / 3600000
+
                             innerHTML += '<tr id="' + responseData[i].userActivityID + '"><td>' +
                                 responseData[i].activityName + '</td><td>' +
                                 responseData[i].startDate + " " + responseData[i].startTime + '</td><td>' +
@@ -86,7 +90,45 @@ function checkLogin() {
                     innerHTML += '</tbody>' +
                     '</table>';
 
-                    document.getElementById("tableDiv").innerHTML = innerHTML
+                    document.getElementById("tableDiv").innerHTML = innerHTML;
+
+                    var ctx = document.getElementById('myChart').getContext('2d');
+                    var myChart = new Chart(ctx, {
+                        type: 'bar',
+                        data: {
+                            labels: ['Sleeping', 'Working', 'Exercise', 'Other (Productive)', 'Other (Not Productive)'],
+                            datasets: [{
+                                label: '# of Hours',
+                                data: tableData,
+                                backgroundColor: [
+                                    'rgba(255, 99, 132, 0.2)',
+                                    'rgba(54, 162, 235, 0.2)',
+                                    'rgba(255, 206, 86, 0.2)',
+                                    'rgba(75, 192, 192, 0.2)',
+                                    'rgba(153, 102, 255, 0.2)',
+                                    'rgba(255, 159, 64, 0.2)'
+                                ],
+                                borderColor: [
+                                    'rgba(255, 99, 132, 1)',
+                                    'rgba(54, 162, 235, 1)',
+                                    'rgba(255, 206, 86, 1)',
+                                    'rgba(75, 192, 192, 1)',
+                                    'rgba(153, 102, 255, 1)',
+                                    'rgba(255, 159, 64, 1)'
+                                ],
+                                borderWidth: 1
+                            }]
+                        },
+                        options: {
+                            scales: {
+                                yAxes: [{
+                                    ticks: {
+                                        beginAtZero: true
+                                    }
+                                }]
+                            }
+                        }
+                    });
 
             }
 
